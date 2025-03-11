@@ -9,7 +9,7 @@
     <link crossorigin="anonymous" href="https://lib.baomitu.com/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/styles/nord.min.css" type="text/css" rel="stylesheet" />
     <script crossorigin="anonymous" src="https://lib.baomitu.com/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-    <title>ipmitool练习</title>
+    <title>ipmitool刷写FRU</title>
     <style type="text/css">
     pre {
         position: relative;
@@ -42,15 +42,25 @@
     pre .hljs[style]:first-child {
         color: #9e9e9e;
     }
+
+    h3 {
+        /*        font-family: Arial, Helvetica, sans-serif;*/
+        background: linear-gradient(to right, #3f51b5, #f44336, #3949ab, #01579b);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        justify-self: center;
+        justify-content: end;
+        align-self: center;
+    }
     </style>
 </head>
 
 <body>
-    <main class="container p-5">
+    <main class="container p-4">
         <div class="row">
-            <h3 class="text-center">刷写FRU</h2>
-                <p class="lh-lg lead"><code>ipmitool power cycle</code>命令的作用是：先<strong>关闭</strong>服务器电源<i class="bi bi-arrow-right mx-2"></i>然后等待几秒钟服务器便自动<strong>重新启动；<br></strong><i class="bi bi-exclamation-triangle-fill text-warning mx-1"></i>刷完fru<strong class="fs-5 p-1 text-warning-emphasis">必须</strong>使用<code>ipmitool power cycle</code>命令重启，等待重启完毕后使用<code>ipmitool fru list 0</code>命令<strong class="text-success">检查刷写是否生效</strong>。
-                </p>
+            <h3 class="text-center font-monospace">刷写FRU</h3>
+            <p class="lh-lg"><code>ipmitool power cycle</code>命令的作用是：先<strong>关闭</strong>服务器电源<i class="bi bi-arrow-right mx-2"></i>然后等待几秒钟服务器便自动<strong>重新启动；<br></strong><i class="bi bi-exclamation-triangle-fill text-warning mx-1"></i>刷完fru<strong class="fs-5 p-1 text-warning-emphasis">必须</strong>使用<code>ipmitool power cycle</code>命令重启，等待重启完毕后使用<code>ipmitool fru list 0</code>命令<strong class="text-success">检查刷写是否生效</strong>。
+            </p>
         </div>
         <h5 class="text-center text-danger-emphasis">具体刷写命令：</h5>
         <div class="input-group my-3 pe-5">
