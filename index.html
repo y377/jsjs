@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link crossorigin="anonymous" href="https://lib.baomitu.com/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://lib.baomitu.com/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/styles/nord.min.css" type="text/css" rel="stylesheet" />
+    <script crossorigin="anonymous" src="https://lib.baomitu.com/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <title>ipmitool刷写FRU</title>
+    <style type="text/css">
+    pre {
+        position: relative;
+        font-size: 1rem;
+    }
+
+    input {
+        font-size: 1rem !important;
+    }
+
+    code>button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        opacity: 0.5;
+    }
+
+    code>button:hover {
+        opacity: 1;
+    }
+
+    code:not(pre > code) {
+        color: #212529 !important;
+        background-color: #e1e1e1;
+        padding: 0.4rem;
+        border-radius: 0.25rem;
+        margin: 0.25rem 0.1rem 0.25rem 0.1rem;
+    }
+
+    pre .hljs[style]:first-child {
+        color: #9e9e9e;
+    }
+    </style>
+</head>
+
+<body>
+    <main class="container p-5">
+        <div class="row">
+            <h3 class="text-center">刷写FRU</h2>
+                <p class="lh-lg lead"><code>ipmitool power cycle</code>作用是：先<strong>关闭</strong>服务器电源<i class="bi bi-arrow-right mx-2"></i>然后等待几秒会自动<strong>重新启动；</strong><i class="bi bi-exclamation-triangle-fill text-warning mx-1"></i>刷完fru<strong class="fs-5 p-1 text-warning-emphasis">必须</strong>使用该命令重启，<br>等待重启完毕后使用<code>ipmitool fru list 0</code><strong class="text-success">检查是否生效</strong>。
+                </p>
+        </div>
+        <h5 class="text-center text-danger-emphasis">具体刷写命令：</h5>
+        <div class="input-group my-3 pe-5">
+            <span class="input-group-text text-bg-light" style="padding: 0 4.65rem;">刷写<strong class="mx-1">Product Name</strong></span>
+            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" aria-label="Product Name" data-target="productNameCode" value="" placeholder="请输入Product Name">
+        </div>
+        <pre><code id="productNameCode">ipmitool fru edit 0 field p 1 ""</code></pre>
+        <blockquote class="blockquote text-end fs-6">
+            <i class="bi bi-arrow-return-right mx-1"></i>检查命令：<code>dmidecode | grep "Product Name"</code>
+        </blockquote>
+        <div class="input-group mt-5 mb-3 pe-5">
+            <span class="input-group-text text-bg-light" style="padding: 0 4.65rem;">刷写<strong class="mx-1">Serial Number</strong></span>
+            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="SerialNumberCode" value="" placeholder="请输入Serial Number">
+        </div>
+        <pre><code id="SerialNumberCode">ipmitool fru edit 0 field p 5 "6101860203621143"</code></pre>
+        <blockquote class="blockquote text-end fs-6">
+            <p><i class="bi bi-arrow-return-right mx-1"></i><code>dmidecode -t 1 | grep "Serial Number"</code></p>
+        </blockquote>
+        <div class="input-group mt-5 mb-3 pe-5">
+            <span class="input-group-text text-bg-light" style="padding: 0 3.7rem;">刷写<strong class="mx-1">Product Asset Tag</strong></span>
+            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="ProductAssetTagCode" value="" placeholder="请输入Product Asset Tag">
+        </div>
+        <pre><code id="ProductAssetTagCode">ipmitool fru edit 0 field p 6 "2023-nc-srv-000963"</code></pre>
+        <blockquote class="blockquote text-end fs-6">
+            <p><i class="bi bi-arrow-return-right mx-1"></i><code>dmidecode | grep "Asset Tag"</code></p>
+        </blockquote>
+        <div class="input-group mt-5 mb-3 pe-5">
+            <span class="input-group-text text-bg-light" style="padding: 0 2.86rem;">刷写<strong class="mx-1">Product Extra（套餐）</strong></span>
+            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="ProductExtraCode" value="" placeholder="请输入Product Extra（套餐）">
+        </div>
+        <pre><code id="ProductExtraCode">ipmitool fru edit 0 field p 7 "G3325-I8HD60"</code></pre>
+        <blockquote class="blockquote text-end fs-6">
+            <p><i class="bi bi-arrow-return-right mx-1"></i><code>dmidecode | grep "SKU Number"</code></p>
+        </blockquote>
+        <h5 class="text-center text-danger-emphasis py-3">更多刷写命令：</h5>
+        <div class="table-responsive">
+            <table class="table table-hover caption-top align-middle table-bordered">
+                <caption class="text-end">
+                    <em>"value"</em>是要输入的值（该值必须被英文双引号包裹）
+                </caption>
+                <thead class="text-center">
+                    <tr>
+                        <th scope="col" class="align-middle">类型</th>
+                        <th scope="col" class="align-middle">字段编号</th>
+                        <th scope="col" class="align-middle">FRU Device Description</th>
+                        <th scope="col" class="align-middle">长度</th>
+                        <th scope="col" class="align-middle">命令示例</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Chassis Type</td>
+                        <td></td>
+                        <td><code>ipmitool raw 0x0a 0x12 0x00 0x5a 0x00 0xCode</code></td>
+                    </tr>
+                    <tr>
+                        <td>c</td>
+                        <td>0</td>
+                        <td>Chassis Part Number</td>
+                        <td>12</td>
+                        <td><code>ipmitool fru edit 0 field c 0 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>c</td>
+                        <td>1</td>
+                        <td>Chassis Serial</td>
+                        <td>11</td>
+                        <td><code>ipmitool fru edit 0 field c 1 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>c</td>
+                        <td>2</td>
+                        <td>Chassis Extra</td>
+                        <td>32</td>
+                        <td><code>ipmitool fru edit 0 field c 2 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><strong>Board Mfg Date</strong></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>b</td>
+                        <td>0</td>
+                        <td>Board Mfg</td>
+                        <td>12</td>
+                        <td><code>ipmitool fru edit 0 field b 0 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>b</td>
+                        <td>1</td>
+                        <td>Board Product</td>
+                        <td>16</td>
+                        <td><code>ipmitool fru edit 0 field b 1 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>b</td>
+                        <td>2</td>
+                        <td>Board Serial</td>
+                        <td>10</td>
+                        <td><code>ipmitool fru edit 0 field b 2 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>b</td>
+                        <td>3</td>
+                        <td>Board Part Number</td>
+                        <td>12</td>
+                        <td><code>ipmitool fru edit 0 field b 3 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>0</td>
+                        <td>Product Manufacturer</td>
+                        <td>12</td>
+                        <td><code>ipmitool fru edit 0 field p 0 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>1</td>
+                        <td>Product Name</td>
+                        <td>32</td>
+                        <td><code>ipmitool fru edit 0 field p 1 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>2</td>
+                        <td>Product Part Number</td>
+                        <td>24</td>
+                        <td><code>ipmitool fru edit 0 field p 2 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>3</td>
+                        <td>Product Version</td>
+                        <td>6</td>
+                        <td><code>ipmitool fru edit 0 field p 3 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>4</td>
+                        <td>Product Serial</td>
+                        <td>24</td>
+                        <td><code>ipmitool fru edit 0 field p 4 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>5</td>
+                        <td>Product Asset Tag</td>
+                        <td>32</td>
+                        <td><code>ipmitool fru edit 0 field p 5 "value"</code></td>
+                    </tr>
+                    <tr>
+                        <td>p</td>
+                        <td>7</td>
+                        <td>Product Extra</td>
+                        <td>24</td>
+                        <td><code>ipmitool fru edit 0 field p 7 "value"</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h5 class="text-center text-danger-emphasis py-3">参考如下：</h5>
+        <pre><code>ipmitool fru list 0 #输入该命令，显示如下信息：
+
+Chassis Type         : X660 (5A)
+Chassis Extra        : 661048d838a311edb7c40242c0a80222
+Board Mfg Date       : Sat Dec 24 21:00:00 2022
+Board Mfg            : Luxshare-ICT
+Board Product        : SOC board
+Board Serial         : EM2CM000014022
+Board Part Number    : 231A10010001
+Board Extra          : PCBA Ver:A5
+Product Manufacturer : Nettrix
+Product Name         : WGS23222-C
+Product Part Number  : 61018602
+Product Version      : Whitley
+Product Serial       : 6101860203621143
+Product Asset Tag    : 2023-nc-srv-000963
+Product Extra        : Suite:G3325-I8HD60
+</code></pre>
+    </main>
+    <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js" type="application/javascript"></script>
+    <script type="text/javascript">
+    hljs.addPlugin({
+        "after:highlightBlock": ({ block }) => {
+            setTimeout(() => {
+                const blockParent = block.closest("pre");
+                if (!blockParent) return;
+
+                // 删除旧行号
+                const existingLineNumbers = blockParent.querySelector('code.hljs.border-end');
+                if (existingLineNumbers) existingLineNumbers.remove();
+
+                // 设置父元素样式
+                blockParent.classList.add("pre-wrapper", "d-flex", "rounded", "lh-base");
+
+                // 创建新行号元素
+                const lineNumbersCode = document.createElement("code");
+                lineNumbersCode.classList.add(
+                    "hljs",
+                    "border-end",
+                    "border-secondary",
+                    // "text-opacity-50",
+                    "flex-shrink-0",
+                    "text-center",
+                    "px-2"
+                );
+
+                // lineNumbersCode.style.backgroundColor = 'inherit';
+                lineNumbersCode.style.userSelect = 'none';
+
+                // 修复此处变量名错误
+                const linesCount = block.textContent.trimEnd().split(/\n/).length;
+                lineNumbersCode.textContent = Array.from({ length: linesCount }, (_, i) => i + 1).join("\n");
+
+                blockParent.insertBefore(lineNumbersCode, block);
+                block.classList.add("flex-grow-1");
+            }, 0);
+        }
+    });
+
+
+
+
+    hljs.highlightAll();
+    </script>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/clipboard.js/2.0.10/clipboard.min.js" type="application/javascript"></script>
+    <script type="text/javascript">
+    window.addEventListener("load", event_pageLoaded, false);
+
+    function event_pageLoaded() {
+        // 还原图标样式延时时间 1000 毫秒
+        const TIMER_DEFAULT_ICON_STYLE = 1500;
+        // 代码块
+        // let codeChunk = document.querySelectorAll("pre > code:nth-child(2)");
+        let codeChunk = document.querySelectorAll("pre > code:last-child");
+
+        // 遍历代码块添加按钮
+        for (let j = 0; j < codeChunk.length; j++) {
+            // 当前命中的代码块元素 <pre> 标签
+            let ele_pre = codeChunk.item(j);
+
+            let ele_btn = document.createElement("button");
+            ele_btn.classList.add("btn", "btn-none", "my-btn-hover");
+            // 生成复制按钮后添加iconfont，添加样式
+            const ele_i = document.createElement("i");
+            ele_i.classList.add(...[`bi`, `bi-clipboard`, `text-white`]);
+            ele_btn.appendChild(ele_i);
+            ele_pre.appendChild(ele_btn, ele_pre.nextSibling);
+            ele_btn.setAttribute("data-clipboard-action", "copy");
+
+            ele_btn.setAttribute("data-bs-toggle", "tooltip");
+            ele_btn.setAttribute("data-bs-title", "点击复制");
+
+            // 生成 鼠标悬停提示 - 实例对象
+            const bs_btnTooltips = new bootstrap.Tooltip(ele_btn);
+
+            // 生成 ClipboardJS 实例对象
+            const clipboard = new ClipboardJS(ele_btn, {
+                target: function(trigger) {
+                    return trigger.parentElement;
+                },
+            });
+
+            // ClipboardJS 实例对象的拷贝成功事件处理函数
+            clipboard.on("success", function(e) {
+                // 获取当前用户点击的按钮触发元素 以及内部的i元素 ( i元素在按钮创建之初就已置入 )
+                const currentTriggerElement = e.trigger;
+                const ele_innerIcon = currentTriggerElement.querySelector("i.bi-clipboard");
+                // 控制指定元素的图标显示状态
+                FN_styleChange(ele_innerIcon, bs_btnTooltips, true);
+                window.setTimeout(FN_styleChange.bind(null, ele_innerIcon, bs_btnTooltips, false), TIMER_DEFAULT_ICON_STYLE);
+                // 清除选区
+                e.clearSelection();
+            });
+        }
+    }
+
+    function FN_styleChange(param_element, param_elementTips, param_status) {
+        if (!param_element || !param_elementTips) {
+            console.error('Invalid element references');
+            return;
+        }
+        const clissList_default = [`bi-clipboard`, `text-white`];
+        const clissList_changed = [`bi-clipboard-check`, `text-success`];
+
+        // 要开启显示
+        if (param_status == true) {
+            // 移除默认样式，更换为新的样式
+            param_element.classList.remove(...clissList_default);
+            param_element.classList.add(...clissList_changed);
+            param_elementTips.setContent({ ".tooltip-inner": "已复制" });
+
+        } else {
+            // 移除新样式，还原默认样式
+            param_element.classList.add(...clissList_default);
+            param_element.classList.remove(...clissList_changed);
+            param_elementTips.setContent({ ".tooltip-inner": "点击复制" });
+
+            param_elementTips.hide();
+        }
+    }
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputs = document.querySelectorAll('input[data-target]');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const targetID = this.getAttribute('data-target');
+                const targetCode = document.getElementById(targetID);
+                const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
+
+                if (!targetCode.hasAttribute('data-template')) {
+                    targetCode.setAttribute('data-template', defaultTemplate);
+                }
+
+                targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
+
+                // 更新高亮效果
+                hljs.highlightElement(targetCode);
+
+                // ★★★关键新增代码（解决复制按钮消失）：
+                event_pageLoaded();
+            });
+        });
+
+        // 页面初始加载时自动更新一次
+        function inputsUpdate() {
+            inputs.forEach(input => {
+                input.dispatchEvent(new Event('input'));
+            });
+        }
+
+        window.addEventListener('load', inputsUpdate);
+    });
+    </script>
+</body>
+
+</html>
