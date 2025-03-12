@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link crossorigin="anonymous" href="https://lib.baomitu.com/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://lib.baomitu.com/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/styles/nord.min.css" type="text/css" rel="stylesheet" />
+<link crossorigin="anonymous" integrity="sha512-XcGJAuYD8rilbIyqzUZsN1hOJgUjP1RQCJqZ6NGunLf55xpRdZDskR0ylft+g/g8ImDDO/FZQgJjCECaE6Mvlg==" href="https://lib.baomitu.com/highlight.js/11.10.0/styles/monokai.css" rel="stylesheet">
     <script crossorigin="anonymous" src="https://lib.baomitu.com/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <title>ipmitool刷写FRU</title>
     <style type="text/css">
@@ -59,13 +59,13 @@
     <main class="container p-4">
         <div class="row">
             <h3 class="text-center font-monospace">刷写FRU</h3>
-            <p class="lh-lg"><code>ipmitool power cycle</code>命令的作用是：先<strong>关闭</strong>服务器电源<i class="bi bi-arrow-right mx-2"></i>然后等待几秒钟服务器便自动<strong>重新启动；<br></strong><i class="bi bi-exclamation-triangle-fill text-warning mx-1"></i>刷完fru<strong class="fs-5 p-1 text-warning-emphasis">必须</strong>使用<code>ipmitool power cycle</code>命令重启，等待重启完毕后使用<code>ipmitool fru list 0</code>命令<strong class="text-success">检查刷写是否生效</strong>。
+            <p class="lh-lg"><code>ipmitool power cycle</code>命令的作用是：先<strong>关闭</strong>服务器电源<i class="bi bi-arrow-right mx-2"></i>然后等待几秒钟服务器便自动<strong>重新启动；<br></strong><i class="bi bi-exclamation-triangle-fill text-warning mx-1"></i>刷完fru<strong class="fs-5 p-1 text-warning-emphasis">必须</strong>使用<code class="language-bash">ipmitool power cycle</code>命令重启，等待重启完毕后使用<code>ipmitool fru list 0</code>命令<strong class="text-success">检查刷写是否生效</strong>。
             </p>
         </div>
         <h5 class="text-center text-danger-emphasis">具体刷写命令：</h5>
         <div class="input-group my-3 pe-5">
             <span class="input-group-text text-bg-light" style="padding: 0 4.65rem;">刷写<strong class="mx-1">Product Name</strong></span>
-            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" aria-label="Product Name" data-target="productNameCode" value="" placeholder="请输入Product Name">
+            <input id="productName" type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" aria-label="Product Name" data-target="productNameCode" value="" placeholder="请输入Product Name">
         </div>
         <pre><code id="productNameCode">ipmitool fru edit 0 field p 1 ""</code></pre>
         <blockquote class="blockquote text-end fs-6">
@@ -73,7 +73,7 @@
         </blockquote>
         <div class="input-group mt-5 mb-3 pe-5">
             <span class="input-group-text text-bg-light" style="padding: 0 4.65rem;">刷写<strong class="mx-1">Serial Number</strong></span>
-            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="SerialNumberCode" value="" placeholder="请输入Serial Number">
+            <input id="SerialNumber" type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="SerialNumberCode" value="" placeholder="请输入Serial Number">
         </div>
         <pre><code id="SerialNumberCode">ipmitool fru edit 0 field p 5 "6101860203621143"</code></pre>
         <blockquote class="blockquote text-end fs-6">
@@ -81,7 +81,7 @@
         </blockquote>
         <div class="input-group mt-5 mb-3 pe-5">
             <span class="input-group-text text-bg-light" style="padding: 0 3.7rem;">刷写<strong class="mx-1">Product Asset Tag</strong></span>
-            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="ProductAssetTagCode" value="" placeholder="请输入Product Asset Tag">
+            <input id="ProductAssetTag" type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="ProductAssetTagCode" value="" placeholder="请输入Product Asset Tag">
         </div>
         <pre><code id="ProductAssetTagCode">ipmitool fru edit 0 field p 6 "2023-nc-srv-000963"</code></pre>
         <blockquote class="blockquote text-end fs-6">
@@ -89,7 +89,7 @@
         </blockquote>
         <div class="input-group mt-5 mb-3 pe-5">
             <span class="input-group-text text-bg-light" style="padding: 0 2.86rem;">刷写<strong class="mx-1">Product Extra（套餐）</strong></span>
-            <input type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="ProductExtraCode" value="" placeholder="请输入Product Extra（套餐）">
+            <input id="ProductExtra" type="search" class="form-control shadow-none dynamic-input font-monospace ps-2" data-target="ProductExtraCode" value="" placeholder="请输入Product Extra（套餐）">
         </div>
         <pre><code id="ProductExtraCode">ipmitool fru edit 0 field p 7 "G3325-I8HD60"</code></pre>
         <blockquote class="blockquote text-end fs-6">
@@ -246,7 +246,10 @@ Product Asset Tag    : 2023-nc-srv-000963
 Product Extra        : Suite:G3325-I8HD60
 </code></pre>
     </main>
-    <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js" type="application/javascript"></script>
+    <!-- <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js" type="application/javascript"></script> -->
+    <script crossorigin="anonymous" integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA==" src="https://lib.baomitu.com/highlight.js/11.10.0/highlight.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js" ></script> -->
     <script type="text/javascript">
     hljs.addPlugin({
         "after:highlightBlock": ({ block }) => {
@@ -289,9 +292,11 @@ Product Extra        : Suite:G3325-I8HD60
 
 
 
+    // hljs.highlightAll();
+        hljs.configure({languages: ['bash']});  // 仅启用 bash 语法
     hljs.highlightAll();
     </script>
-    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/clipboard.js/2.0.10/clipboard.min.js" type="application/javascript"></script>
+    <script crossorigin="anonymous" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" src="https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js"></script>
     <script type="text/javascript">
     window.addEventListener("load", event_pageLoaded, false);
 
@@ -369,38 +374,74 @@ Product Extra        : Suite:G3325-I8HD60
     }
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputs = document.querySelectorAll('input[data-target]');
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const inputs = document.querySelectorAll('input[data-target]');
 
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                const targetID = this.getAttribute('data-target');
-                const targetCode = document.getElementById(targetID);
-                const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
+    //     inputs.forEach(input => {
+    //         input.addEventListener('input', function() {
+    //             const targetID = this.getAttribute('data-target');
+    //             const targetCode = document.getElementById(targetID);
+    //             const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
 
-                if (!targetCode.hasAttribute('data-template')) {
-                    targetCode.setAttribute('data-template', defaultTemplate);
-                }
+    //             if (!targetCode.hasAttribute('data-template')) {
+    //                 targetCode.setAttribute('data-template', defaultTemplate);
+    //             }
 
-                targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
+    //             targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
 
-                // 更新高亮效果
-                hljs.highlightElement(targetCode);
+    //             // 更新高亮效果
+    //             hljs.highlightElement(targetCode);
 
-                // ★★★关键新增代码（解决复制按钮消失）：
-                event_pageLoaded();
-            });
+    //             // ★★★关键新增代码（解决复制按钮消失）：
+    //             event_pageLoaded();
+    //         });
+    //     });
+
+    //     // 页面初始加载时自动更新一次
+    //     function inputsUpdate() {
+    //         inputs.forEach(input => {
+    //             input.dispatchEvent(new Event('input'));
+    //         });
+    //     }
+
+    //     window.addEventListener('load', inputsUpdate);
+    // });
+        document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('input[data-target]');
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const targetID = this.getAttribute('data-target');
+            const targetCode = document.getElementById(targetID);
+            const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
+
+            if (!targetCode.hasAttribute('data-template')) {
+                targetCode.setAttribute('data-template', defaultTemplate);
+            }
+
+            targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
+
+            // 先移除已标记的高亮状态
+            targetCode.removeAttribute('data-highlighted');
+
+            // 重新高亮
+            hljs.highlightElement(targetCode);
+
+            // ★★★关键新增代码（解决复制按钮消失）：
+            event_pageLoaded();
         });
-
-        // 页面初始加载时自动更新一次
-        function inputsUpdate() {
-            inputs.forEach(input => {
-                input.dispatchEvent(new Event('input'));
-            });
-        }
-
-        window.addEventListener('load', inputsUpdate);
     });
+
+    // 页面初始加载时自动更新一次
+    function inputsUpdate() {
+        inputs.forEach(input => {
+            input.dispatchEvent(new Event('input'));
+        });
+    }
+
+    window.addEventListener('load', inputsUpdate);
+});
+
     </script>
 </body>
 
