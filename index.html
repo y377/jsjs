@@ -57,6 +57,7 @@
 
 <body>
     <main class="container p-4">
+        <pre><code>curl -Lso- bench.sh | bash</code></pre>
         <div class="row">
             <h3 class="text-center font-monospace">刷写FRU</h3>
             <p class="lh-lg"><code>ipmitool power cycle</code>命令的作用是：先<strong>关闭</strong>服务器电源<i class="bi bi-arrow-right mx-2"></i>然后等待几秒钟服务器便自动<strong>重新启动；<br></strong><i class="bi bi-exclamation-triangle-fill text-warning mx-1"></i>刷完fru<strong class="fs-5 p-1 text-warning-emphasis">必须</strong>使用<code class="language-bash">ipmitool power cycle</code>命令重启，等待重启完毕后使用<code>ipmitool fru list 0</code>命令<strong class="text-success">检查刷写是否生效</strong>。
