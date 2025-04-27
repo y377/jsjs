@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link crossorigin="anonymous" href="https://lib.baomitu.com/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link crossorigin="anonymous" href="https://lib.baomitu.com/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<link crossorigin="anonymous" integrity="sha512-XcGJAuYD8rilbIyqzUZsN1hOJgUjP1RQCJqZ6NGunLf55xpRdZDskR0ylft+g/g8ImDDO/FZQgJjCECaE6Mvlg==" href="https://lib.baomitu.com/highlight.js/11.10.0/styles/monokai.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://lib.baomitu.com/highlight.js/11.10.0/styles/monokai.css" rel="stylesheet">
     <script crossorigin="anonymous" src="https://lib.baomitu.com/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <title>ipmitool刷写FRU</title>
     <style type="text/css">
@@ -245,6 +245,8 @@ Product Serial       : 6101860203621143
 Product Asset Tag    : 2023-nc-srv-000963
 Product Extra        : Suite:G3325-I8HD60
 </code></pre>
+<h5 class="text-center py-4">poweoshell根据日志查找故障</h5>
+<pre><code>Get-ChildItem -Path "C:\你的文件夹路径" -Recurse -File | Select-String -Pattern "ErrorType: CPU" | Select-Object Filename, LineNumber, Line</code></pre>
     </main>
     <!-- <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/11.4.0/highlight.min.js" type="application/javascript"></script> -->
     <script crossorigin="anonymous" integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA==" src="https://lib.baomitu.com/highlight.js/11.10.0/highlight.min.js"></script>
@@ -293,7 +295,7 @@ Product Extra        : Suite:G3325-I8HD60
 
 
     // hljs.highlightAll();
-        hljs.configure({languages: ['bash']});  // 仅启用 bash 语法
+    hljs.configure({ languages: ['bash'] }); // 仅启用 bash 语法
     hljs.highlightAll();
     </script>
     <script crossorigin="anonymous" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" src="https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js"></script>
@@ -374,74 +376,42 @@ Product Extra        : Suite:G3325-I8HD60
     }
     </script>
     <script>
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     const inputs = document.querySelectorAll('input[data-target]');
 
-    //     inputs.forEach(input => {
-    //         input.addEventListener('input', function() {
-    //             const targetID = this.getAttribute('data-target');
-    //             const targetCode = document.getElementById(targetID);
-    //             const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputs = document.querySelectorAll('input[data-target]');
 
-    //             if (!targetCode.hasAttribute('data-template')) {
-    //                 targetCode.setAttribute('data-template', defaultTemplate);
-    //             }
-
-    //             targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
-
-    //             // 更新高亮效果
-    //             hljs.highlightElement(targetCode);
-
-    //             // ★★★关键新增代码（解决复制按钮消失）：
-    //             event_pageLoaded();
-    //         });
-    //     });
-
-    //     // 页面初始加载时自动更新一次
-    //     function inputsUpdate() {
-    //         inputs.forEach(input => {
-    //             input.dispatchEvent(new Event('input'));
-    //         });
-    //     }
-
-    //     window.addEventListener('load', inputsUpdate);
-    // });
-        document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('input[data-target]');
-
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            const targetID = this.getAttribute('data-target');
-            const targetCode = document.getElementById(targetID);
-            const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
-
-            if (!targetCode.hasAttribute('data-template')) {
-                targetCode.setAttribute('data-template', defaultTemplate);
-            }
-
-            targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
-
-            // 先移除已标记的高亮状态
-            targetCode.removeAttribute('data-highlighted');
-
-            // 重新高亮
-            hljs.highlightElement(targetCode);
-
-            // ★★★关键新增代码（解决复制按钮消失）：
-            event_pageLoaded();
-        });
-    });
-
-    // 页面初始加载时自动更新一次
-    function inputsUpdate() {
         inputs.forEach(input => {
-            input.dispatchEvent(new Event('input'));
+            input.addEventListener('input', function() {
+                const targetID = this.getAttribute('data-target');
+                const targetCode = document.getElementById(targetID);
+                const defaultTemplate = targetCode.getAttribute('data-template') || targetCode.textContent;
+
+                if (!targetCode.hasAttribute('data-template')) {
+                    targetCode.setAttribute('data-template', defaultTemplate);
+                }
+
+                targetCode.textContent = defaultTemplate.replace(/"(.*?)"/, `"${this.value.trim()}"`);
+
+                // 先移除已标记的高亮状态
+                targetCode.removeAttribute('data-highlighted');
+
+                // 重新高亮
+                hljs.highlightElement(targetCode);
+
+                // ★★★关键新增代码（解决复制按钮消失）：
+                event_pageLoaded();
+            });
         });
-    }
 
-    window.addEventListener('load', inputsUpdate);
-});
+        // 页面初始加载时自动更新一次
+        function inputsUpdate() {
+            inputs.forEach(input => {
+                input.dispatchEvent(new Event('input'));
+            });
+        }
 
+        window.addEventListener('load', inputsUpdate);
+    });
     </script>
 </body>
 
